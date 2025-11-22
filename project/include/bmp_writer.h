@@ -5,4 +5,7 @@
 
 int export_to_bmp(const char *filename, const SvgDocument *doc);
 
+//*filename: the filename of the BMP file to be writtrn into
+//Svgdocument *doc: read the input svg file
+
 #endif

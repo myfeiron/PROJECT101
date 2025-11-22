@@ -1,0 +1,14 @@
+svg_types.h 是整个项目的“地基”和“灵魂”。
+它定义了所有数据结构：形状类型枚举、Circle/Rect/Line的具体属性（坐标、颜色）、带union的SvgShape节点（支持不同形状复用内存）、以及最终的SvgDocument（画布宽高 + 形状链表头指针）。项目里几乎每一个.c文件都会#include这个头文件，没有它其他模块完全无法工作。
+
+svg_parser.h 是“输入入口”。
+它提供svg_load_from_file()把磁盘上的.svg文本文件真正解析成svg_types.h里定义的内存结构，同时还提供创建空文档和彻底释放文档的函数。所有后续操作（打印、导出、编辑）都必须先经过parser把数据装进内存。
+
+svg_render_console.h 是“纯文字输出终端”。
+它只负责把parser已经填好的SvgDocument以作业要求的精确格式（SVG Document: width=...、[1] CIRCLE: ... 等）打印到控制台，属于只读消费者，主要服务于必修的--parse命令。
+
+bmp_writer.h 是“矢量转位图导出器”。
+它也只读取parser产生的SvgDocument，把里面的圆、矩形、线一条一条光栅化绘制到像素缓冲区，再写成标准的BMP文件，实现作业要求的位图导出功能。
+
+svg_gui.h 是“可选的交互编辑器”（加分部分）。
+它同样依赖svg_types.h的数据结构，接收parser加载好的SvgDocument（或者新建一个空的），在SDL窗口里实时渲染同一个形状链表，支持鼠标拖动、缩放、点击添加新形状——所有新增的形状都会直接插入到原来的链表中，所以编辑完后仍然可以用bmp_writer.h导出，或者控制台打印查看。
