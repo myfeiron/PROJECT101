@@ -60,33 +60,37 @@ void svg_free_document(SvgDocument *doc);
 
 ---
 
-### 成员3：BMP导出器开发
+### 成员3：图像导出开发（BMP + JPG）
 **主要职责**：
 - BMP文件格式实现
+- JPG导出功能（使用stb_image_write）
 - 图形绘制算法
-- 像素渲染
-- 颜色转换
+- 像素渲染和颜色转换
 
 **负责模块**：
 - `src/bmp_writer.c` - BMP导出器
-- `include/bmp_writer.h` - 导出器接口
+- `src/jpg_writer.c` - JPG导出器
+- `include/bmp_writer.h` - BMP接口
+- `include/jpg_writer.h` - JPG接口
 
-**工作量**：约200行代码
+**工作量**：约300行代码
 
 **技能要求**：
 - 二进制文件操作
 - 图形算法（Bresenham、中点圆）
-- 位操作
-- 结构体对齐
+- 图像库使用（stb_image_write）
+- 位操作和结构体对齐
 
 **关键算法**：
 - Bresenham线条算法
 - 中点圆算法
 - 扫描线填充
+- JPG质量控制
 
 **关键函数**：
 ```c
 int export_to_bmp(const char *filename, const SvgDocument *doc);
+int export_to_jpg(const char *filename, const SvgDocument *doc, int quality);
 ```
 
 ---
@@ -193,12 +197,12 @@ int svg_save_to_file(const char *filename, const SvgDocument *doc);
 |------|---------|--------|---------|---------|
 | 成员1 | ~100 | 中 | 项目管理、集成测试 | ⭐⭐⭐⭐ |
 | 成员2 | ~200 | 高 | 数据结构设计 | ⭐⭐⭐⭐⭐ |
-| 成员3 | ~200 | 高 | 图形算法实现 | ⭐⭐⭐⭐⭐ |
+| 成员3 | ~300 | 高 | BMP+JPG导出 | ⭐⭐⭐⭐⭐ |
 | 成员4 | ~200 | 高 | SDL2集成 | ⭐⭐⭐⭐⭐ |
 | 成员5 | ~200 | 高 | 交互逻辑 | ⭐⭐⭐⭐⭐ |
 | 成员6 | ~110 | 中 | 文档编写 | ⭐⭐⭐⭐ |
 
-**总计**：~1010行代码
+**总计**：~1110行代码
 
 ---
 
@@ -249,13 +253,17 @@ int svg_save_to_file(const char *filename, const SvgDocument *doc);
 - [ ] 编写测试SVG文件
 
 ### 成员3的任务
-- [ ] 研究BMP文件格式
-- [ ] 实现BMP文件头
-- [ ] 实现Bresenham线条算法
-- [ ] 实现中点圆算法
-- [ ] 实现矩形填充
-- [ ] 实现颜色转换
-- [ ] 测试导出功能
+- [x] 研究BMP文件格式
+- [x] 实现BMP文件头
+- [x] 实现Bresenham线条算法
+- [x] 实现中点圆算法
+- [x] 实现矩形填充
+- [x] 实现颜色转换
+- [x] 测试BMP导出功能
+- [x] 集成stb_image_write库
+- [x] 实现JPG导出功能
+- [x] 添加质量参数控制
+- [x] 测试JPG导出功能
 
 ### 成员4的任务
 - [ ] 配置SDL2开发环境
