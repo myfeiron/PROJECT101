@@ -5,6 +5,7 @@
 #include "../include/svg_parser.h"
 #include "../include/svg_render.h"
 #include "../include/bmp_writer.h"
+#include "../include/jpg_writer.h"
 #include "../include/svg_gui.h"
 
 void print_usage(const char *program_name) {
@@ -16,6 +17,10 @@ void print_usage(const char *program_name) {
     printf("  Export to BMP:\n");
     printf("    %s --export_bmp <input.svg> <output.bmp>\n", program_name);
     printf("    %s -eb <input.svg> <output.bmp>\n\n", program_name);
+    printf("  Export to JPG:\n");
+    printf("    %s --export_jpg <input.svg> <output.jpg> [quality]\n", program_name);
+    printf("    %s -ej <input.svg> <output.jpg> [quality]\n", program_name);
+    printf("    (quality: 1-100, default: 90)\n\n");
     printf("  Interactive GUI Editor:\n");
     printf("    %s --gui [input.svg]\n", program_name);
     printf("    %s -g [input.svg]\n\n", program_name);
@@ -100,6 +105,41 @@ int main(int argc, char *argv[]) {
         }
 
         printf("Successfully exported to BMP: %s\n", argv[3]);
+
+        svg_free_document(doc);
+        return 0;
+    }
+
+    // Export to JPG
+    if (strcmp(argv[1], "--export_jpg") == 0 || strcmp(argv[1], "-ej") == 0) {
+        if (argc < 4) {
+            fprintf(stderr, "Error: Output filename required\n");
+            print_usage(argv[0]);
+            return 1;
+        }
+
+        int quality = 90; // Default quality
+        if (argc >= 5) {
+            quality = atoi(argv[4]);
+            if (quality < 1 || quality > 100) {
+                fprintf(stderr, "Warning: Quality must be 1-100, using default 90\n");
+                quality = 90;
+            }
+        }
+
+        SvgDocument *doc = NULL;
+        if (svg_load_from_file(argv[2], &doc) != 0) {
+            fprintf(stderr, "Failed to load SVG file: %s\n", argv[2]);
+            return 1;
+        }
+
+        if (export_to_jpg(argv[3], doc, quality) != 0) {
+            fprintf(stderr, "Failed to export JPG file: %s\n", argv[3]);
+            svg_free_document(doc);
+            return 1;
+        }
+
+        printf("Successfully exported to JPG: %s (quality: %d)\n", argv[3], quality);
 
         svg_free_document(doc);
         return 0;
