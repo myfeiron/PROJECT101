@@ -1,19 +1,31 @@
+#define SDL_MAIN_HANDLED
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "../include/svg_parser.h"
 #include "../include/svg_render.h"
 #include "../include/bmp_writer.h"
-// #include "../include/svg_gui.h"
+#include "../include/svg_gui.h"
 
 void print_usage(const char *program_name) {
+    printf("SVG Processor - ENGR1010J Project\n\n");
     printf("Usage:\n");
-    printf("  %s --parse <input.svg>\n", program_name);
-    printf("  %s -p <input.svg>\n", program_name);
-    printf("  %s --export_bmp <input.svg> <output.bmp>\n", program_name);
-    printf("  %s -eb <input.svg> <output.bmp>\n", program_name);
-    printf("  %s --gui [input.svg]\n", program_name);
-    printf("  %s -g [input.svg]\n", program_name);
+    printf("  Parse and display SVG:\n");
+    printf("    %s --parse <input.svg>\n", program_name);
+    printf("    %s -p <input.svg>\n\n", program_name);
+    printf("  Export to BMP:\n");
+    printf("    %s --export_bmp <input.svg> <output.bmp>\n", program_name);
+    printf("    %s -eb <input.svg> <output.bmp>\n\n", program_name);
+    printf("  Interactive GUI Editor:\n");
+    printf("    %s --gui [input.svg]\n", program_name);
+    printf("    %s -g [input.svg]\n\n", program_name);
+    printf("GUI Controls:\n");
+    printf("  - Click to select and drag shapes\n");
+    printf("  - Toolbar buttons to add shapes\n");
+    printf("  - DELETE: Remove selected shape\n");
+    printf("  - S: Save to SVG file\n");
+    printf("  - T: Toggle toolbar\n");
+    printf("  - ESC: Exit\n");
 }
 
 int main(int argc, char *argv[]) {
@@ -24,9 +36,27 @@ int main(int argc, char *argv[]) {
 
     // GUI mode
     if (strcmp(argv[1], "--gui") == 0 || strcmp(argv[1], "-g") == 0) {
-        printf("GUI mode is not available in this build (SDL not linked).\n");
-        printf("Please use the separate svg_gui.exe for GUI functionality.\n");
-        return 1;
+        SvgDocument *doc = NULL;
+        
+        // Load SVG file if provided
+        if (argc >= 3) {
+            if (svg_load_from_file(argv[2], &doc) != 0) {
+                fprintf(stderr, "Warning: Failed to load SVG file: %s\n", argv[2]);
+                fprintf(stderr, "Starting with empty document...\n");
+            }
+        }
+        
+        printf("Starting GUI editor...\n");
+        printf("Controls:\n");
+        printf("  - Click shapes to select and drag\n");
+        printf("  - Use toolbar buttons to add shapes\n");
+        printf("  - DELETE: Remove selected shape\n");
+        printf("  - S: Save to SVG file\n");
+        printf("  - T: Toggle toolbar\n");
+        printf("  - ESC: Exit\n\n");
+        
+        run_gui(doc);
+        return 0;
     }
 
     if (argc < 3) {

@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
+#include <time.h>
 #include <SDL.h>
 #include "../include/svg_gui.h"
 #include "../include/svg_types.h"
 #include "../include/svg_parser.h"
 #include "../include/svg_render.h"
+#include "../include/svg_writer.h"
 
 int gui_init(GUIState* state) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -268,15 +271,15 @@ void gui_handle_events(GUIState* state, int* running) {
                                         break;
                                     case SVG_SHAPE_LINE:
                                         // Simple line hit detection (could be improved)
-                                        float dist = fabsf((current->data.line.y2 - current->data.line.y1) * mx -
+                                        double dist = fabs((current->data.line.y2 - current->data.line.y1) * mx -
                                                          (current->data.line.x2 - current->data.line.x1) * my +
                                                          current->data.line.x2 * current->data.line.y1 -
                                                          current->data.line.y2 * current->data.line.x1) /
-                                                     sqrtf((current->data.line.y2 - current->data.line.y1) *
+                                                     sqrt((current->data.line.y2 - current->data.line.y1) *
                                                            (current->data.line.y2 - current->data.line.y1) +
                                                            (current->data.line.x2 - current->data.line.x1) *
                                                            (current->data.line.x2 - current->data.line.x1));
-                                        if (dist < 5.0f) hit = 1;
+                                        if (dist < 5.0) hit = 1;
                                         break;
                                 }
 
@@ -348,8 +351,38 @@ void gui_handle_events(GUIState* state, int* running) {
                             if (current) {
                                 if (prev) prev->next = current->next;
                                 else state->document->shapes = current->next;
+                                
+                                // Free allocated strings
+                                switch (current->type) {
+                                    case SVG_SHAPE_CIRCLE:
+                                        if (current->data.circle.fill) free(current->data.circle.fill);
+                                        break;
+                                    case SVG_SHAPE_RECT:
+                                        if (current->data.rect.fill) free(current->data.rect.fill);
+                                        break;
+                                    case SVG_SHAPE_LINE:
+                                        if (current->data.line.stroke) free(current->data.line.stroke);
+                                        break;
+                                }
+                                
                                 free(current);
                                 state->selected_shape = -1;
+                                printf("Shape deleted\n");
+                            }
+                        }
+                        break;
+                    case SDLK_s:
+                        if (state->document) {
+                            char filename[256];
+                            time_t t = time(NULL);
+                            struct tm *tm_info = localtime(&t);
+                            snprintf(filename, sizeof(filename), "output_%04d%02d%02d_%02d%02d%02d.svg",
+                                   tm_info->tm_year + 1900, tm_info->tm_mon + 1, tm_info->tm_mday,
+                                   tm_info->tm_hour, tm_info->tm_min, tm_info->tm_sec);
+                            if (svg_save_to_file(filename, state->document) == 0) {
+                                printf("Saved to %s\n", filename);
+                            } else {
+                                printf("Failed to save file\n");
                             }
                         }
                         break;
