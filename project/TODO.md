@@ -1,13 +1,116 @@
-# GUI Integration TODO
+# SVG Processor - 项目任务清单
 
-## Tasks
-- [x] Modify main.c to add --gui command option that launches the GUI, optionally loading an SVG file
-- [x] Refactor svg_gui.c: move GUI logic to run_gui(SvgDocument* doc) function, remove its main function
-- [x] Update Makefile to build a single executable including GUI sources
-- [x] Update README.md to document --gui usage and update TODO section
-- [x] Build the project to ensure compilation
-- [x] Test the --gui option to verify GUI launches and loads SVG if provided
+## 已完成功能 ✓
 
-## Progress Tracking
-- Current: All tasks completed. GUI integration is functional with separate executables due to SDL linking issues.
-- Next: None - GUI task is complete.
+### 核心功能
+- [x] SVG文件解析（圆形、矩形、线条）
+- [x] 控制台输出显示
+- [x] BMP格式导出
+- [x] 内存管理优化（正确释放字符串）
+
+### GUI编辑器
+- [x] SDL2集成
+- [x] 图形可视化渲染
+- [x] 鼠标选择和拖拽
+- [x] 工具栏界面
+- [x] 动态添加图形
+- [x] 删除选中图形
+- [x] 保存为SVG文件
+- [x] 键盘快捷键支持
+
+### 项目管理
+- [x] 构建脚本（build.bat）
+- [x] 测试脚本（test.bat）
+- [x] 用户指南文档
+- [x] README更新
+
+## 待实现功能
+
+### 高优先级
+- [ ] 颜色选择器（允许用户自定义图形颜色）
+- [ ] 撤销/重做功能
+- [ ] 图形属性编辑面板（修改尺寸、位置）
+- [ ] 文件对话框（打开/保存）
+
+### 中优先级
+- [ ] 更多SVG元素支持
+  - [ ] 多边形（polygon）
+  - [ ] 折线（polyline）
+  - [ ] 椭圆（ellipse）
+  - [ ] 路径（path）
+  - [ ] 文本（text）
+- [ ] 图形变换
+  - [ ] 旋转
+  - [ ] 缩放
+  - [ ] 镜像
+- [ ] 图层管理
+- [ ] 网格和对齐辅助线
+
+### 低优先级
+- [ ] PNG/JPG导出支持
+- [ ] SVG滤镜效果
+- [ ] 渐变填充
+- [ ] 图案填充
+- [ ] 动画支持
+- [ ] 批量处理模式
+
+### 代码优化
+- [ ] 单元测试
+- [ ] 性能优化（大文件处理）
+- [ ] 错误处理增强
+- [ ] 代码注释完善
+- [ ] 跨平台支持（Linux/macOS）
+
+## 已知问题
+
+### Bug修复
+- [ ] 线条选择检测不够精确
+- [ ] 大半径圆形渲染可能超出画布
+- [ ] 内存泄漏检查（使用valgrind）
+
+### 改进建议
+- [ ] GUI响应速度优化
+- [ ] 更好的错误提示信息
+- [ ] 支持命令行批量转换
+
+## 版本历史
+
+### v1.0 (当前版本)
+- 基本SVG解析和渲染
+- BMP导出功能
+- 交互式GUI编辑器
+- 保存SVG文件
+
+### 计划中的版本
+
+#### v1.1
+- 颜色选择器
+- 撤销/重做
+- 属性编辑
+
+#### v1.2
+- 更多图形类型
+- 图形变换
+- 图层管理
+
+#### v2.0
+- 完整的SVG规范支持
+- 高级编辑功能
+- 跨平台发布
+
+## 贡献指南
+
+如需添加新功能：
+1. 在此文件中标记任务
+2. 创建功能分支
+3. 实现并测试
+4. 更新文档
+5. 标记为完成
+
+## 项目里程碑
+
+- [x] 2024-11: 项目启动，基础功能实现
+- [x] 2024-11: GUI编辑器完成
+- [ ] 2024-12: 高级编辑功能
+- [ ] 2025-01: 完整SVG支持
+- [ ] 2025-02: 跨平台发布

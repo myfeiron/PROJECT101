@@ -159,9 +159,28 @@ void svg_free_document(SvgDocument *doc) {
     SvgShape *current = doc->shapes;
     while (current) {
         SvgShape *next = current->next;
+        
+        // Free allocated strings
+        switch (current->type) {
+            case SVG_SHAPE_CIRCLE:
+                if (current->data.circle.fill) free(current->data.circle.fill);
+                break;
+            case SVG_SHAPE_RECT:
+                if (current->data.rect.fill) free(current->data.rect.fill);
+                break;
+            case SVG_SHAPE_LINE:
+                if (current->data.line.stroke) free(current->data.line.stroke);
+                break;
+        }
+        
         free(current);
         current = next;
     }
 
     free(doc);
+}
+
+// Alias for GUI compatibility
+void free_svg_document(SvgDocument *doc) {
+    svg_free_document(doc);
 }

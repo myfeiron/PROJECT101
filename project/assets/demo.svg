@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- 太阳 -->
+  <circle cx="650" cy="100" r="60" fill="#FFD700"/>
+  
+  <!-- 房子主体 -->
+  <rect x="200" y="300" width="200" height="150" fill="#8B4513"/>
+  
+  <!-- 屋顶 -->
+  <line x1="200" y1="300" x2="300" y2="200" stroke="#FF0000"/>
+  <line x1="300" y1="200" x2="400" y2="300" stroke="#FF0000"/>
+  
+  <!-- 窗户 -->
+  <rect x="240" y="340" width="50" height="50" fill="#87CEEB"/>
+  <rect x="310" y="340" width="50" height="50" fill="#87CEEB"/>
+  
+  <!-- 门 -->
+  <rect x="270" y="400" width="60" height="50" fill="#654321"/>
+  
+  <!-- 树 -->
+  <rect x="500" y="380" width="30" height="70" fill="#8B4513"/>
+  <circle cx="515" cy="360" r="40" fill="#228B22"/>
+  
+  <!-- 草地 -->
+  <rect x="0" y="450" width="800" height="150" fill="#90EE90"/>
+  
+  <!-- 云朵 -->
+  <circle cx="150" cy="120" r="30" fill="#FFFFFF"/>
+  <circle cx="180" cy="120" r="35" fill="#FFFFFF"/>
+  <circle cx="210" cy="120" r="30" fill="#FFFFFF"/>
+</svg>

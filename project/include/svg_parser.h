@@ -12,5 +12,6 @@ SvgDocument* create_svg_document(float width, float height);
 
 //free all the svgshapes in every data table
 void svg_free_document(SvgDocument *doc);
+void free_svg_document(SvgDocument *doc); // Alias for compatibility
 
 #endif
